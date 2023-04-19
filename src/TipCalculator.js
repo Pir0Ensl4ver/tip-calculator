@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+
 import TipCalculatorButton from "./TipCalculatorButton";
 import Card from "./UI/Card";
+import { DollarIcon, PersonIcon } from "./UI/Icons/Icons";
 
 import classes from "./TipCalculator.module.css";
 
@@ -39,53 +41,94 @@ const TipCalculator = () => {
   return (
     <Card>
       <div className={classes[`tip-calculator`]}>
-        <h1 className={classes[`tip-calculator-h1`]}>Tip Calculator</h1>
-        {percentValues.map((value) => {
-          return (
-            <TipCalculatorButton
-              className={classes[`custom-button`]}
-              value={value}
-              onClick={onClickPercentValueButtonHandler}
+        <div className={classes[`tip-calculator-left-section`]}>
+          <section className={classes[`tip-calculator-left-section-first`]}>
+            <h3 className={classes[`tip-calculator-input-h3`]}>Bill</h3>
+            <div className={classes[`tip-calculator-input-background`]}>
+              <DollarIcon />
+              <input
+                className={classes[`tip-calculator-input`]}
+                value={billAmount}
+                onChange={onClickBillInputHandler}
+              />
+            </div>
+          </section>
+          <section className={classes[`tip-calculator-left-section-second`]}>
+            <h3 className={classes[`tip-calculator-input-h3`]}>Select Tip %</h3>
+            <div className={classes[`tip-calculator-button-container`]}>
+              {percentValues.map((value) => {
+                return (
+                  <TipCalculatorButton
+                    value={value}
+                    onClick={onClickPercentValueButtonHandler}
+                  >
+                    {value}%
+                  </TipCalculatorButton>
+                );
+              })}
+              {!isButtonClicked ? (
+                <button onClick={onClickIsButtonclickedHandler}>
+                  Custom value
+                </button>
+              ) : (
+                <input
+                  className={classes[`tip-calculator-custom-input`]}
+                  placeholder="Custom"
+                  value={tipPercentage}
+                  onChange={onClickTipPercentageInputHandler}
+                />
+              )}
+            </div>
+          </section>
+          <section className={classes[`tip-calculator-left-section-third`]}>
+            <h3 className={classes[`tip-calculator-input-h3`]}>
+              Number of People
+            </h3>
+            <div className={classes[`tip-calculator-input-background`]}>
+              <PersonIcon />
+              <input className={classes[`tip-calculator-input`]} />
+            </div>
+          </section>
+        </div>
+        <div className={classes[`tip-calculator-right-section`]}>
+          <section className={classes[`tip-calculator-right-section-first`]}>
+            <p className={classes[`tip-calculator-right-section-info-p`]}>
+              Tip Amount
+            </p>
+            <p className={classes[`tip-calculator-right-section-person-p`]}>
+              / person
+            </p>
+            <label
+              className={
+                classes[`tip-calculator-right-section-tip-display-first`]
+              }
             >
-              {value}%
-            </TipCalculatorButton>
-          );
-        })}
-        <input
-          className={classes[`tip-calculator-input`]}
-          type="number"
-          placeholder="Bill Amount"
-          value={billAmount}
-          onChange={onClickBillInputHandler}
-        />
-        {!isButtonClicked ? (
-          <button
-            className={classes[`custom-button`]}
-            onClick={onClickIsButtonclickedHandler}
-          >
-            Custom value
-          </button>
-        ) : (
-          <input
-            className={classes[`tip-calculator-input`]}
-            type="number"
-            placeholder="Tip Percentage"
-            value={tipPercentage}
-            onChange={onClickTipPercentageInputHandler}
-          />
-        )}
-
-        <button
-          className={classes[`custom-button`]}
-          onClick={onClickResetValuesHandler}
-        >
-          Reset
-        </button>
-        <div>
-          <p className={classes[`tip-calculator-p`]}>Total Tip: ${totalTip}</p>
-          <p className={classes[`tip-calculator-p`]}>
-            Total Amount: ${totalAmount}
-          </p>
+              $4.27
+            </label>
+          </section>
+          <section className={classes[`tip-calculator-right-section-second`]}>
+            <p className={classes[`tip-calculator-right-section-info-p`]}>
+              Total
+            </p>
+            <p className={classes[`tip-calculator-right-section-person-p`]}>
+              / person
+            </p>
+            <label
+              className={
+                classes[`tip-calculator-right-section-tip-display-second`]
+              }
+            >
+              $32.79
+            </label>
+          </section>
+          <section>
+            <button
+              className={classes[`custom-button`]}
+              onClick={onClickResetValuesHandler}
+            >
+              Reset
+            </button>
+          </section>
         </div>
       </div>
     </Card>

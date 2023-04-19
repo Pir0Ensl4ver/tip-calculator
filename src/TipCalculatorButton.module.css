@@ -1,17 +1,20 @@
 .button {
-  background-color: #4caf50;
+  background-color: #00474b;
   border: none;
   color: white;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
+  font-size: 24px;
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  line-height: 35.54px;
   cursor: pointer;
-  border-radius: 4px;
-  padding: 10px 24px;
+  border-radius: 5px;
+  width: 117px;
+  height: 48px;
 }
 
 .button:hover {
-  background-color: #45a049;
+  background-color: #9fe8df;
 }

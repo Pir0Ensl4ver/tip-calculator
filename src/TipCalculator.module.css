@@ -1,4 +1,7 @@
 .tip-calculator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   width: 920px;
   height: 481px;
@@ -9,37 +12,194 @@
   border-radius: 25px;
 }
 
-.tip-calculator-h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: #333;
+.tip-calculator-left-section {
+  width: 379px;
+  height: 388px;
+  margin: 45px 48px 48px 48px;
+}
+
+.tip-calculator-left-section-first {
+  width: 379px;
+  height: 78px;
+  margin-bottom: 40px;
+}
+
+.tip-calculator-left-section-second {
+  width: 379px;
+  height: 152px;
+  margin-bottom: 40px;
+}
+
+.tip-calculator-left-section-third {
+  width: 379px;
+  height: 78px;
+  margin-bottom: 48px;
+}
+
+.tip-calculator-input-background {
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+  width: 379px;
+  height: 48px;
+  border: 0px;
+  padding: 0px;
+  border-radius: 5px;
+
+  background: #f3f9fa;
+}
+
+.tip-calculator-input-h3 {
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0px 0px 6px 0px;
+
+  color: #5e7a7d;
+}
+
+.tip-calculator-input-dollar-icon {
+  position: absolute;
+  height: 15.456000328063965px;
+  width: 9.84000015258789px;
+  margin-left: 19.2559814453125px;
+  margin-top: 16.87200164794922px;
+}
+
+.tip-calculator-input-person-icon {
+  position: absolute;
+  height: 16px;
+  width: 13px;
+  margin-left: 17px;
+  margin-top: 16px;
 }
 
 .tip-calculator-input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
+  width: 379px;
+  height: 40px;
+  margin-top: 3px;
+  padding-right: 6px;
+  border: 0px;
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 35.54;
+  text-align: right;
+
+  color: #00474b;
+
+  background: #f3f9fa;
 }
 
-.tip-calculator-custom-button {
-  background-color: #4caf50;
+.tip-calculator-button-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-gap: 14px;
+  width: 379px;
+  height: 112px;
+}
+
+.tip-calculator-custom-input {
+  background: #f3f9fa;
+  color: #00474b;
   border: none;
-  color: white;
-  text-align: center;
+  text-align: right;
   text-decoration: none;
+  padding: 0px 6px 0px 0px;
   display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
+  font-size: 24px;
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  line-height: 36px;
   cursor: pointer;
-  border-radius: 4px;
-  padding: 10px 24px;
+  border-radius: 2px;
+  box-sizing: border-box;
+  width: 117px;
+  height: 48px;
 }
 
-.tip-calculator-custom-button:hover {
-  background-color: #45a049;
+.tip-calculator-custom-input::placeholder {
+  color: #547878;
+  text-align: center;
+}
+
+.tip-calculator-right-section {
+  width: 379px;
+  height: 388px;
+  margin: 45px 48px 48px 48px;
+  border-radius: 15px;
+  background: #00474b;
+}
+
+.tip-calculator-right-section-first {
+  width: 333px;
+  height: 71px;
+  margin: 40px 40px 25px 40px;
+}
+
+.tip-calculator-right-section-second {
+  width: 333px;
+  height: 71px;
+  margin: 0px 40px 25px 40px;
+}
+
+.tip-calculator-right-section-info-p {
+  width: 98px;
+  height: 24px;
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+
+  color: #ffffff;
+}
+
+.tip-calculator-right-section-person-p {
+  width: 64px;
+  height: 19px;
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 19px;
+
+  color: #7f9d9f;
+}
+
+.tip-calculator-right-section-tip-display-first {
+  position: absolute;
+  top: 72px;
+  left: 663px;
+  width: 143px;
+  height: 71px;
+  line-height: 71px;
+  font-style: normal;
+  font-size: 48px;
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  text-align: right;
+  letter-spacing: -1px;
+  color: #26c2ae;
+}
+
+.tip-calculator-right-section-tip-display-second {
+  position: absolute;
+  top: 168px;
+  left: 663px;
+  width: 143px;
+  height: 71px;
+  line-height: 71px;
+  font-style: normal;
+  font-size: 48px;
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  text-align: right;
+  letter-spacing: -1px;
+  color: #26c2ae;
 }
 
 .tip-calculator-p {

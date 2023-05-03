@@ -6,16 +6,13 @@ const initialInputState = {
 };
 
 const inputStateReducer = (state, action) => {
-  if ((action.type = "INPUT")) {
-    return { value: action.value, isTouched: state.isTouched };
-  }
-  if ((action.type = "BLUR")) {
-    return { isTouched: true, value: state.value };
-  }
-  if ((action.type = "RESET")) {
-    return { isTouched: false, value: "" };
-  }
-  return inputStateReducer;
+  const options = {
+    INPUT: { value: action.value, isTouched: state.isTouched },
+    BLUR: { value: state.value, isTouched: true },
+    RESET: { value: "", isTouched: false },
+    default: state,
+  };
+  return options[action.type] || options["default"];
 };
 
 const useInput = (validateValue) => {

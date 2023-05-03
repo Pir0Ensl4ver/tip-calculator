@@ -8,12 +8,25 @@ import { DollarIcon, PersonIcon } from "./UI/Icons/Icons";
 
 import classes from "./TipCalculator.module.css";
 
-const IsEqualOrAboveZero = (value) => value >= 0;
-const isBetweenZeroAndOneHundred = (value) => value > 0 && value <= 100;
+const isPositiveNumber = (value) => {
+  if (!value) {
+    return false;
+  }
+  return !isNaN(value) && parseFloat(value) > 0;
+};
+
+const isPositiveNumberAndUnderOrEqualHundred = (value) => {
+  if (!value) {
+    return false;
+  }
+  return !isNaN(value) && parseFloat(value) > 0 && parseFloat(value) <= 100;
+};
 
 const TipCalculator = () => {
   const [tipPerPerson, setTipPerPerson] = useState(0);
   const [totalPerPerson, setTotalPerPerson] = useState(0);
+  const [tipButtonValue, setTipButtonValue] = useState(0);
+  const [tipButtonIsClicked, setTipButtonIsClicked] = useState(false);
 
   const {
     value: billValue,
@@ -22,16 +35,16 @@ const TipCalculator = () => {
     valueChangeHandler: billChangeHandler,
     inputBlurHandler: billBlurHandler,
     reset: resetBill,
-  } = useInput(IsEqualOrAboveZero);
+  } = useInput(isPositiveNumber);
 
   const {
-    value: percentValue,
-    isValid: custovPercentIsValid,
+    value: customPercentValue,
+    isValid: customPercentIsValid,
     hasError: customPercentHasError,
     valueChangeHandler: percentChangeHandler,
     inputBlurHandler: percentBlurHandler,
     reset: resetCustomPercent,
-  } = useInput(isBetweenZeroAndOneHundred);
+  } = useInput(isPositiveNumberAndUnderOrEqualHundred);
 
   const {
     value: peopleNumberValue,
@@ -40,34 +53,51 @@ const TipCalculator = () => {
     valueChangeHandler: peopleNumberChangeHandler,
     inputBlurHandler: peopleNumberBlurHandler,
     reset: resetPeopleNumber,
-  } = useInput(IsEqualOrAboveZero);
+  } = useInput(isPositiveNumber);
 
   useEffect(() => {
     const billFloat = parseFloat(billValue);
     const numberOfPeopleInt = parseInt(peopleNumberValue);
-    const percentFloat = parseFloat(percentValue);
+    let percentFloat = parseFloat(customPercentValue);
 
-    if (
-      !isNaN(billFloat) &&
-      !isNaN(numberOfPeopleInt) &&
-      !isNaN(percentFloat)
-    ) {
+    if (billIsValid && peopleNumberIsValid) {
+      if (tipButtonIsClicked) {
+        percentFloat = parseFloat(tipButtonValue);
+      } else if (customPercentIsValid) {
+        percentFloat = parseFloat(customPercentValue);
+      } else {
+        percentFloat = 0;
+      }
+
       const tipAmount = billFloat * (percentFloat / 100);
       const tipPerPerson = tipAmount / numberOfPeopleInt;
       const totalPerPerson = (billFloat + tipAmount) / numberOfPeopleInt;
 
       setTipPerPerson(tipPerPerson);
       setTotalPerPerson(totalPerPerson);
-    } else {
-      setTipPerPerson(0);
-      setTotalPerPerson(0);
     }
-  }, [billValue, peopleNumberValue, percentValue]);
+  }, [
+    tipButtonIsClicked,
+    tipButtonValue,
+    billValue,
+    billIsValid,
+    peopleNumberValue,
+    peopleNumberIsValid,
+    customPercentValue,
+    customPercentIsValid,
+  ]);
+
+  const onClickSetTipValueButtonHandler = (event) => {
+    setTipButtonValue(event.target.value);
+    setTipButtonIsClicked(true);
+  };
 
   const onClickResetButtonHandler = () => {
     resetBill();
     resetCustomPercent();
     resetPeopleNumber();
+    setTipPerPerson(0);
+    setTotalPerPerson(0);
   };
 
   const percentValues = [5, 10, 15, 25, 50];
@@ -82,9 +112,11 @@ const TipCalculator = () => {
               <DollarIcon />
               <input
                 className={classes[`tip-calculator-input`]}
+                type="number"
                 value={billValue}
                 onChange={billChangeHandler}
                 onBlur={billBlurHandler}
+                placeholder="0"
               />
             </div>
           </section>
@@ -93,13 +125,21 @@ const TipCalculator = () => {
             <div className={classes[`tip-calculator-button-container`]}>
               {percentValues.map((value) => {
                 return (
-                  <TipCalculatorButton onClick={percentChangeHandler}>
+                  <TipCalculatorButton
+                    key={value}
+                    value={value}
+                    onClick={onClickSetTipValueButtonHandler}
+                  >
                     {value}%
                   </TipCalculatorButton>
                 );
               })}
               <input
                 className={classes[`tip-calculator-custom-input`]}
+                type="number"
+                value={customPercentValue}
+                onChange={percentChangeHandler}
+                onBlur={percentBlurHandler}
                 placeholder="Custom"
               />
             </div>
@@ -112,8 +152,11 @@ const TipCalculator = () => {
               <PersonIcon />
               <input
                 className={classes[`tip-calculator-input`]}
+                type="number"
+                value={peopleNumberValue}
                 onChange={peopleNumberChangeHandler}
                 onBlur={peopleNumberBlurHandler}
+                placeholder="0"
               />
             </div>
           </section>
@@ -133,7 +176,7 @@ const TipCalculator = () => {
             <label
               className={classes[`tip-calculator-right-section-tip-display`]}
             >
-              {tipPerPerson}
+              ${tipPerPerson.toFixed(2)}
             </label>
           </section>
           <section className={classes[`tip-calculator-right-section-second`]}>
@@ -150,7 +193,7 @@ const TipCalculator = () => {
             <label
               className={classes[`tip-calculator-right-section-tip-display`]}
             >
-              {totalPerPerson}
+              ${totalPerPerson.toFixed(2)}
             </label>
           </section>
           <section className={classes[`tip-calculator-right-section-third`]}>

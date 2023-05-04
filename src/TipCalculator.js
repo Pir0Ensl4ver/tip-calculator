@@ -15,7 +15,9 @@ const isPositiveNumber = (value) => {
   return !isNaN(value) && parseFloat(value) > 0;
 };
 
-const isPositiveNumberAndUnderOrEqualHundred = (value) => {
+const isPositiveNumberAndUnderOrEqualHundredAndCustomPercentActive = (
+  value
+) => {
   if (!value) {
     return false;
   }
@@ -26,7 +28,7 @@ const TipCalculator = () => {
   const [tipPerPerson, setTipPerPerson] = useState(0);
   const [totalPerPerson, setTotalPerPerson] = useState(0);
   const [tipButtonValue, setTipButtonValue] = useState(0);
-  const [tipButtonIsClicked, setTipButtonIsClicked] = useState(false);
+  const [useCustomPercent, setUseCustomPercent] = useState(false);
 
   const {
     value: billValue,
@@ -44,7 +46,7 @@ const TipCalculator = () => {
     valueChangeHandler: percentChangeHandler,
     inputBlurHandler: percentBlurHandler,
     reset: resetCustomPercent,
-  } = useInput(isPositiveNumberAndUnderOrEqualHundred);
+  } = useInput(isPositiveNumberAndUnderOrEqualHundredAndCustomPercentActive);
 
   const {
     value: peopleNumberValue,
@@ -60,15 +62,17 @@ const TipCalculator = () => {
     const numberOfPeopleInt = parseInt(peopleNumberValue);
     let percentFloat = parseFloat(customPercentValue);
 
-    if (billIsValid && peopleNumberIsValid) {
-      if (tipButtonIsClicked) {
-        percentFloat = parseFloat(tipButtonValue);
-      } else if (customPercentIsValid) {
-        percentFloat = parseFloat(customPercentValue);
-      } else {
-        percentFloat = 0;
-      }
+    if (useCustomPercent) {
+      percentFloat = parseFloat(customPercentValue);
+    } else {
+      percentFloat = parseFloat(tipButtonValue);
+    }
 
+    if (
+      billIsValid &&
+      peopleNumberIsValid &&
+      (useCustomPercent ? customPercentIsValid : true)
+    ) {
       const tipAmount = billFloat * (percentFloat / 100);
       const tipPerPerson = tipAmount / numberOfPeopleInt;
       const totalPerPerson = (billFloat + tipAmount) / numberOfPeopleInt;
@@ -77,7 +81,7 @@ const TipCalculator = () => {
       setTotalPerPerson(totalPerPerson);
     }
   }, [
-    tipButtonIsClicked,
+    useCustomPercent,
     tipButtonValue,
     billValue,
     billIsValid,
@@ -87,9 +91,15 @@ const TipCalculator = () => {
     customPercentIsValid,
   ]);
 
-  const onClickSetTipValueButtonHandler = (event) => {
-    setTipButtonValue(event.target.value);
-    setTipButtonIsClicked(true);
+  const onCustomPercentChangeHandler = (event) => {
+    percentChangeHandler(event);
+    setUseCustomPercent(true);
+  };
+
+  const onClickSetTipValueButtonHandler = (value) => {
+    setTipButtonValue(value);
+    setUseCustomPercent(false);
+    console.log(value);
   };
 
   const onClickResetButtonHandler = () => {
@@ -98,6 +108,8 @@ const TipCalculator = () => {
     resetPeopleNumber();
     setTipPerPerson(0);
     setTotalPerPerson(0);
+    setTipButtonValue(0);
+    setUseCustomPercent(false);
   };
 
   const percentValues = [5, 10, 15, 25, 50];
@@ -123,14 +135,15 @@ const TipCalculator = () => {
           <section className={classes[`tip-calculator-left-section-second`]}>
             <h3 className={classes[`tip-calculator-input-h3`]}>Select Tip %</h3>
             <div className={classes[`tip-calculator-button-container`]}>
-              {percentValues.map((value) => {
+              {percentValues.map((percentValue) => {
                 return (
                   <TipCalculatorButton
-                    key={value}
-                    value={value}
-                    onClick={onClickSetTipValueButtonHandler}
+                    key={percentValue}
+                    onClick={() =>
+                      onClickSetTipValueButtonHandler(percentValue)
+                    }
                   >
-                    {value}%
+                    {percentValue}%
                   </TipCalculatorButton>
                 );
               })}
@@ -138,7 +151,7 @@ const TipCalculator = () => {
                 className={classes[`tip-calculator-custom-input`]}
                 type="number"
                 value={customPercentValue}
-                onChange={percentChangeHandler}
+                onChange={onCustomPercentChangeHandler}
                 onBlur={percentBlurHandler}
                 placeholder="Custom"
               />

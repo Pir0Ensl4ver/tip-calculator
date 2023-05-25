@@ -176,9 +176,9 @@ const TipCalculator = () => {
             </div>
             <label className={classes[`tip-calculator-right-section-tip-display`]}>
               $
-              {totalPerPerson.toFixed(2) > 9999
-                ? totalPerPerson.toFixed(0)
-                : totalPerPerson.toFixed(2)}
+              {tipPerPerson.toFixed(2) > 9999
+                ? tipPerPerson.toFixed(0)
+                : tipPerPerson.toFixed(2)}
             </label>
           </section>
           <section className={classes[`tip-calculator-right-section-second`]}>

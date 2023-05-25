@@ -1,23 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-import useInput from "./hooks/use-input";
-import TipCalculatorButton from "./TipCalculatorButton";
+import useInput from './hooks/use-input';
+import TipCalculatorButton from './TipCalculatorButton';
 
-import Card from "./UI/Card";
-import { DollarIcon, PersonIcon } from "./UI/Icons/Icons";
+import Card from './UI/Card';
+import { DollarIcon, PersonIcon } from './UI/Icons/Icons';
 
-import classes from "./TipCalculator.module.css";
+import classes from './TipCalculator.module.css';
 
-const isPositiveNumber = (value) => {
+const isPositiveNumberOrEmpty = (value) => {
   if (!value) {
     return false;
   }
   return !isNaN(value) && parseFloat(value) > 0;
 };
 
-const isPositiveNumberAndUnderOrEqualHundredAndCustomPercentActive = (
-  value
-) => {
+const isPositiveNumberAndUnderOrEqualHundredAndCustomPercentActive = (value) => {
   if (!value) {
     return false;
   }
@@ -37,7 +35,7 @@ const TipCalculator = () => {
     valueChangeHandler: billChangeHandler,
     inputBlurHandler: billBlurHandler,
     reset: resetBill,
-  } = useInput(isPositiveNumber);
+  } = useInput(isPositiveNumberOrEmpty);
 
   const {
     value: customPercentValue,
@@ -55,7 +53,7 @@ const TipCalculator = () => {
     valueChangeHandler: peopleNumberChangeHandler,
     inputBlurHandler: peopleNumberBlurHandler,
     reset: resetPeopleNumber,
-  } = useInput(isPositiveNumber);
+  } = useInput(isPositiveNumberOrEmpty);
 
   useEffect(() => {
     const billFloat = parseFloat(billValue);
@@ -124,11 +122,11 @@ const TipCalculator = () => {
               <DollarIcon />
               <input
                 className={classes[`tip-calculator-input`]}
-                type="number"
+                type='number'
                 value={billValue}
                 onChange={billChangeHandler}
                 onBlur={billBlurHandler}
-                placeholder="0"
+                placeholder='0'
               />
             </div>
           </section>
@@ -139,9 +137,7 @@ const TipCalculator = () => {
                 return (
                   <TipCalculatorButton
                     key={percentValue}
-                    onClick={() =>
-                      onClickSetTipValueButtonHandler(percentValue)
-                    }
+                    onClick={() => onClickSetTipValueButtonHandler(percentValue)}
                   >
                     {percentValue}%
                   </TipCalculatorButton>
@@ -149,64 +145,52 @@ const TipCalculator = () => {
               })}
               <input
                 className={classes[`tip-calculator-custom-input`]}
-                type="number"
+                type='number'
                 value={customPercentValue}
                 onChange={onCustomPercentChangeHandler}
                 onBlur={percentBlurHandler}
-                placeholder="Custom"
+                placeholder='Custom'
               />
             </div>
           </section>
           <section className={classes[`tip-calculator-left-section-third`]}>
-            <h3 className={classes[`tip-calculator-input-h3`]}>
-              Number of People
-            </h3>
+            <h3 className={classes[`tip-calculator-input-h3`]}>Number of People</h3>
             <div className={classes[`tip-calculator-input-background`]}>
               <PersonIcon />
               <input
                 className={classes[`tip-calculator-input`]}
-                type="number"
+                type='number'
                 value={peopleNumberValue}
                 onChange={peopleNumberChangeHandler}
                 onBlur={peopleNumberBlurHandler}
-                placeholder="0"
+                placeholder='0'
               />
             </div>
           </section>
         </div>
         <div className={classes[`tip-calculator-right-section`]}>
           <section className={classes[`tip-calculator-right-section-first`]}>
-            <div
-              className={classes[`tip-calculator-right-section-p-container`]}
-            >
-              <p className={classes[`tip-calculator-right-section-info-p`]}>
-                Tip Amount
-              </p>
-              <p className={classes[`tip-calculator-right-section-person-p`]}>
-                / person
-              </p>
+            <div className={classes[`tip-calculator-right-section-p-container`]}>
+              <p className={classes[`tip-calculator-right-section-info-p`]}>Tip Amount</p>
+              <p className={classes[`tip-calculator-right-section-person-p`]}>/ person</p>
             </div>
-            <label
-              className={classes[`tip-calculator-right-section-tip-display`]}
-            >
-              ${tipPerPerson.toFixed(2)}
+            <label className={classes[`tip-calculator-right-section-tip-display`]}>
+              $
+              {totalPerPerson.toFixed(2) > 9999
+                ? totalPerPerson.toFixed(0)
+                : totalPerPerson.toFixed(2)}
             </label>
           </section>
           <section className={classes[`tip-calculator-right-section-second`]}>
-            <div
-              className={classes[`tip-calculator-right-section-p-container`]}
-            >
-              <p className={classes[`tip-calculator-right-section-info-p`]}>
-                Total
-              </p>
-              <p className={classes[`tip-calculator-right-section-person-p`]}>
-                / person
-              </p>
+            <div className={classes[`tip-calculator-right-section-p-container`]}>
+              <p className={classes[`tip-calculator-right-section-info-p`]}>Total</p>
+              <p className={classes[`tip-calculator-right-section-person-p`]}>/ person</p>
             </div>
-            <label
-              className={classes[`tip-calculator-right-section-tip-display`]}
-            >
-              ${totalPerPerson.toFixed(2)}
+            <label className={classes[`tip-calculator-right-section-tip-display`]}>
+              $
+              {totalPerPerson.toFixed(2) > 9999
+                ? totalPerPerson.toFixed(0)
+                : totalPerPerson.toFixed(2)}
             </label>
           </section>
           <section className={classes[`tip-calculator-right-section-third`]}>
